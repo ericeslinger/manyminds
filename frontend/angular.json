@@ -30,6 +30,7 @@
               "projects/manyminds/src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/pink-bluegrey.css",
               "projects/manyminds/src/styles.scss"
             ],
             "scripts": [],
@@ -95,6 +96,7 @@
               "projects/manyminds/src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/pink-bluegrey.css",
               "projects/manyminds/src/styles.scss"
             ],
             "scripts": []
