@@ -1,0 +1,1 @@
+{"version":3,"file":"authorize.d.ts","sourceRoot":"","sources":["../../../src/gateway/resources/authorize.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,MAAM,yBAAyB,CAAC;AAC5D,OAAO,EAAE,gBAAgB,EAAE,MAAM,YAAY,CAAC;AAE9C,wBAAgB,SAAS,CACvB,QAAQ,EAAE,gBAAgB,EAC1B,KAAK,EAAE,iBAAiB,QASzB"}

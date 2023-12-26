@@ -1,2 +1,1 @@
-# manyminds
-Many minds, one home.
+# clay

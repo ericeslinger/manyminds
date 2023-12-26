@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    match /{itemType}/{id} {
+      allow read: if get(/databases/$(database)/documents/$(itemType)/$(id)/_rosters/readers).data.list.keys().hasAny(
+        get(/databases/$(database)/documents/profiles/$(request.auth.token.profile)/_rosters/memberships).data.up.indirect.keys()
+      ) == true
+    }
+  }
+}
