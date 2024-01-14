@@ -10,5 +10,10 @@ service cloud.firestore {
         get(/databases/$(database)/documents/profiles/$(request.auth.token.profile)/_rosters/memberships).data.up.indirect.keys()
       ) == true
     }
+
+    match /site/{anything} {
+      allow read: if true;
+      allow write: if false;
+    }
   }
 }

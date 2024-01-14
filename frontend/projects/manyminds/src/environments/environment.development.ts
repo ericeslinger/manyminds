@@ -1,7 +1,10 @@
 export const environment = {
   useEmulators: true,
   production: false,
-  firebase: {},
+  firebase: {
+    projectId: 'demo-trellis',
+    apiKey: 'demo-api-key',
+  },
 };
 
 // Makes life easier in dev mode.
