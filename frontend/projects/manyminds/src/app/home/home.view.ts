@@ -1,7 +1,19 @@
 import { Component } from '@angular/core';
-import { doc, docData, Firestore } from '@angular/fire/firestore';
+import {
+  collection,
+  doc,
+  docData,
+  Firestore,
+  query,
+  collectionData,
+  where,
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+
+interface Post {
+  handle: string;
+}
 
 @Component({
   selector: 'mm-home',
@@ -12,7 +24,19 @@ import { CommonModule } from '@angular/common';
 })
 export class HomeView {
   someDoc: Observable<unknown>;
+  topPosts: Observable<Post[]>;
   constructor(private firestore: Firestore) {
     this.someDoc = docData(doc(firestore, 'site/meta'));
+    this.topPosts = collectionData(
+      query(
+        collection(firestore, 'posts').withConverter<Post>({
+          fromFirestore: (doc) => {
+            return { handle: doc.data()['handle'] };
+          },
+          toFirestore: (doc) => doc,
+        }),
+        where('public', '==', true)
+      )
+    );
   }
 }

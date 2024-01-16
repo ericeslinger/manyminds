@@ -4,7 +4,6 @@ import {
   initializeTestEnvironment,
   RulesTestEnvironment,
 } from '@firebase/rules-unit-testing';
-import { setLogLevel } from 'firebase/firestore';
 
 let testEnv: RulesTestEnvironment;
 
@@ -20,7 +19,6 @@ async function tick(count: number = 100) {
 }
 
 before(async () => {
-  setLogLevel('error');
   testEnv = await initializeTestEnvironment({
     projectId: 'demo-trellis',
     hub: { host: '127.0.0.1', port: 4400 },

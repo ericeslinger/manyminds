@@ -7,4 +7,9 @@ export const routes: Routes = [
     path: 'home',
     loadComponent: () => import('./home/home.view').then((mod) => mod.HomeView),
   },
+  {
+    path: 'signup',
+    loadComponent: () =>
+      import('./signup/signup.view').then((mod) => mod.SignupView),
+  },
 ];

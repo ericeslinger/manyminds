@@ -10,3 +10,7 @@
 </ul>
 <div>SomeDoc:</div>
 <div>{{someDoc | async | json}}</div>
+<div>Latest posts</div>
+<ul>
+  <li *ngFor="let post of topPosts | async">{{post.handle}}</li>
+</ul>
