@@ -27,7 +27,9 @@ const firebaseProviders: EnvironmentProviders = importProvidersFrom([
   provideFirebaseApp(() => initializeApp(environment.firebase)),
   provideFirestore(() => {
     const firestore = getFirestore();
-    connectFirestoreEmulator(firestore, 'localhost', 8080);
+    if (!(firestore as any)['_settingsFrozen']) {
+      connectFirestoreEmulator(firestore, 'localhost', 8080);
+    }
     return firestore;
   }),
   provideAuth(() => {
