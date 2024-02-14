@@ -1,35 +1,36 @@
 rules_version = '2';
 service cloud.firestore {
-  // function isSignedIn() {
-  //   return true;
-  //   // return request.auth != null;
-  // }
+  function isSignedIn() {
+    return debug(request).auth != null;
+  }
 
   match /databases/{database}/documents {
     // function getThing(itemType, id) {
     //   return debug(get(/databases/$(database)/documents/$(debug(itemType))/$(debug(id))).data);
     // }
 
-    // function getRoster(itemType, id, roster) {
-    //   return get(/databases/$(database)/documents/$(itemType)/$(id)/_rosters/$(roster)).data;
-    // }
+    function getRoster(itemType, id, roster) {
+      return get(/databases/$(database)/documents/$(itemType)/$(id)/_rosters/$(roster)).data;
+    }
 
     match /{document=**} {
       allow read, write: if false;
-    }
-
-    match /{itemType}/{id} {
-      allow read: if (
-        // isSignedIn() && 
-          resource.data.public == true )// || 
-          // getRoster(itemType, id, 'readers').list.keys().hasAny(
-          //     getRoster('profiles', request.auth.token.profile, 'memberships').up.indirect.keys()
-          // ) == true
     }
 
     match /site/{anything} {
       allow read: if true;
       allow write: if false;
     }
+
+    match /{itemType}/{id} {
+      allow read: if  isSignedIn() && (
+         resource.data.public == true 
+       || 
+          getRoster(itemType, id, 'readers').list.keys().hasAny(
+              getRoster('profiles', request.auth.token.profile, 'memberships').up.indirect.keys()
+          ) == true
+      )
+    }
+
   }
 }
