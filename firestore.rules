@@ -1,19 +1,30 @@
 rules_version = '2';
 service cloud.firestore {
-  function isSignedIn() {
-    return request.auth != null;
-  }
+  // function isSignedIn() {
+  //   return true;
+  //   // return request.auth != null;
+  // }
 
   match /databases/{database}/documents {
+    // function getThing(itemType, id) {
+    //   return debug(get(/databases/$(database)/documents/$(debug(itemType))/$(debug(id))).data);
+    // }
+
+    // function getRoster(itemType, id, roster) {
+    //   return get(/databases/$(database)/documents/$(itemType)/$(id)/_rosters/$(roster)).data;
+    // }
+
     match /{document=**} {
       allow read, write: if false;
     }
 
     match /{itemType}/{id} {
-      allow read: if (isSignedIn() && get(/databases/$(database)/documents/$(itemType)/$(id)).data.public == true) || 
-          get(/databases/$(database)/documents/$(itemType)/$(id)/_rosters/readers).data.list.keys().hasAny(
-              get(/databases/$(database)/documents/profiles/$(request.auth.token.profile)/_rosters/memberships).data.up.indirect.keys()
-          ) == true
+      allow read: if (
+        // isSignedIn() && 
+          resource.data.public == true )// || 
+          // getRoster(itemType, id, 'readers').list.keys().hasAny(
+          //     getRoster('profiles', request.auth.token.profile, 'memberships').up.indirect.keys()
+          // ) == true
     }
 
     match /site/{anything} {
