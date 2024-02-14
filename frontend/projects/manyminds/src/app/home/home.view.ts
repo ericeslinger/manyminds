@@ -10,6 +10,7 @@ import {
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 interface Post {
   handle: string;
@@ -18,7 +19,7 @@ interface Post {
 @Component({
   selector: 'mm-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './home.view.html',
   styleUrl: './home.view.scss',
 })
