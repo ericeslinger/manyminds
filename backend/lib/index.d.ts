@@ -6,4 +6,8 @@ export declare const removeZeroesFunction: import("firebase-functions/lib/v2/cor
 export declare const assumeProfileCallable: import("firebase-functions/v2/https").CallableFunction<{
     profile: string;
 }, any>;
+export declare const createProfileCallable: import("firebase-functions/v2/https").CallableFunction<{
+    name: string;
+    description: string;
+}, any>;
 //# sourceMappingURL=index.d.ts.map

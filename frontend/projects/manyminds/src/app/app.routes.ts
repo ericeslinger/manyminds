@@ -12,4 +12,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./signup/signup.view').then((mod) => mod.SignupView),
   },
+  {
+    path: 'createprofile',
+    loadComponent: () =>
+      import('./profile/profile.create').then((mod) => mod.ProfileCreate),
+  },
 ];
