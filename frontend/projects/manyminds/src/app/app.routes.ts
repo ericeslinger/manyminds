@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { environment } from '../environments/environment';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, //default route
@@ -8,13 +7,27 @@ export const routes: Routes = [
     loadComponent: () => import('./home/home.view').then((mod) => mod.HomeView),
   },
   {
-    path: 'signup',
+    path: 'auth/create',
     loadComponent: () =>
-      import('./signup/signup.view').then((mod) => mod.SignupView),
+      import('./auth/auth.create').then((mod) => mod.AuthCreate),
   },
   {
-    path: 'createprofile',
+    path: 'auth/me',
+    loadComponent: () => import('./auth/auth.view').then((mod) => mod.AuthView),
+  },
+  {
+    path: 'profile/create',
     loadComponent: () =>
       import('./profile/profile.create').then((mod) => mod.ProfileCreate),
+  },
+  {
+    path: 'profile/view',
+    loadComponent: () =>
+      import('./profile/profile.view').then((mod) => mod.ProfileView),
+  },
+  {
+    path: 'profile/list',
+    loadComponent: () =>
+      import('./profile/profile.list').then((mod) => mod.ProfileList),
   },
 ];
