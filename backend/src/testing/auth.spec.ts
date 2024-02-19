@@ -18,7 +18,7 @@ async function tick(count: number = 100) {
   });
 }
 
-before(async () => {
+beforeAll(async () => {
   testEnv = await initializeTestEnvironment({
     projectId: 'demo-trellis',
     hub: { host: '127.0.0.1', port: 4400 },
@@ -26,7 +26,7 @@ before(async () => {
   });
 });
 
-after(async () => {
+afterAll(async () => {
   await testEnv.cleanup();
 
   const { host, port } = testEnv.emulators.firestore!;

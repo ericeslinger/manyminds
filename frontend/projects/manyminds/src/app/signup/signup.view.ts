@@ -5,11 +5,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { Auth } from '@angular/fire/auth';
 import { createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'mm-signup',
   standalone: true,
-  imports: [MatButtonModule, MatInputModule, MatIconModule, FormsModule],
+  imports: [
+    MatButtonModule,
+    MatInputModule,
+    MatIconModule,
+    FormsModule,
+    RouterModule,
+  ],
   templateUrl: './signup.view.html',
   styleUrl: './signup.view.scss',
 })
@@ -17,6 +24,7 @@ export class SignupView {
   password = '';
   username = '';
   private auth: Auth = inject(Auth);
+  private router: Router = inject(Router);
 
   async doSignup() {
     console.log({ username: this.username, password: this.password });
@@ -25,6 +33,6 @@ export class SignupView {
       this.username,
       this.password
     );
-    console.log(result);
+    this.router.navigate(['/createprofile']);
   }
 }
