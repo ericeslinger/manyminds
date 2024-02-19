@@ -1,13 +1,16 @@
-export declare const removeZeroesFunction: import("firebase-functions/lib/v2/core").CloudFunction<import("firebase-functions/v2/firestore").FirestoreEvent<import("firebase-functions/v2/firestore").Change<import("firebase-functions/v2/firestore").QueryDocumentSnapshot> | undefined, {
+export declare const removeZeroes: import("firebase-functions/lib/v2/core").CloudFunction<import("firebase-functions/v2/firestore").FirestoreEvent<import("firebase-functions/v2/firestore").Change<import("firebase-functions/v2/firestore").QueryDocumentSnapshot> | undefined, {
     grouptype: string;
     groupId: string;
     rosterId: string;
 }>>;
-export declare const assumeProfileCallable: import("firebase-functions/v2/https").CallableFunction<{
+export declare const assumeProfile: import("firebase-functions/v2/https").CallableFunction<{
     profile: string;
 }, any>;
-export declare const createProfileCallable: import("firebase-functions/v2/https").CallableFunction<{
+export declare const createProfile: import("firebase-functions/v2/https").CallableFunction<{
     name: string;
     description: string;
+}, any>;
+export declare const fetchProfiles: import("firebase-functions/v2/https").CallableFunction<{
+    uid: string;
 }, any>;
 //# sourceMappingURL=index.d.ts.map

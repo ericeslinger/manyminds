@@ -1,1 +1,7 @@
-<p>auth works!</p>
+<div class="root">
+  <div>Your Profiles</div>
+  <ul>
+    <li *ngFor="let profile of profile$ | async">Name: {{profile.name}}</li>
+  </ul>
+  <button mat-button color="primary" routerLink="/profile/create">New Profile</button>
+</div>

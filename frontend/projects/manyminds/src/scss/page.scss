@@ -1,0 +1,6 @@
+@mixin boring {
+  display: flex;
+  flex-direction: column;
+  margin: 16px auto 0 auto;
+  max-width: 600px;
+}

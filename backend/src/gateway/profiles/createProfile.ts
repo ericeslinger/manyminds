@@ -1,6 +1,6 @@
 import { HttpsError, onCall } from 'firebase-functions/v2/https';
-import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
+import { createRoster } from '../common/rosters';
 
 export const createProfile = onCall<{ name: string; description: string }>(
   {
@@ -10,10 +10,16 @@ export const createProfile = onCall<{ name: string; description: string }>(
   async (request) => {
     if (request.auth?.uid) {
       const firestore = getFirestore();
-      const created = await firestore.collection('profiles').add(request.data);
-      await firestore.doc(`profiles/${created.id}/_rosters/users`).create({
-        list: [request.auth.uid],
+      const doc = firestore.collection('profiles').doc();
+      const created = await doc.create({
+        ...request.data,
+        type: 'profiles',
+        id: doc.id,
       });
+      await createRoster({ type: 'profiles', contains: 'users', id: doc.id }, [
+        `uid/${request.auth.uid}`,
+      ]);
+      return (await doc.get()).data;
     } else {
       throw new HttpsError('permission-denied', 'permission denied');
     }

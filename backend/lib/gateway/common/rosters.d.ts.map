@@ -1,0 +1,1 @@
+{"version":3,"file":"rosters.d.ts","sourceRoot":"","sources":["../../../src/gateway/common/rosters.ts"],"names":[],"mappings":"AAEA,wBAAsB,YAAY,CAChC,EACE,EAAE,EACF,QAAQ,EACR,IAAI,GACL,EAAE;IACD,EAAE,EAAE,MAAM,CAAC;IACX,QAAQ,EAAE,MAAM,CAAC;IACjB,IAAI,EAAE,MAAM,CAAC;CACd,EACD,OAAO,GAAE,MAAM,EAAO,iBAWvB"}

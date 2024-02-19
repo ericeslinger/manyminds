@@ -1,0 +1,5 @@
+@use "../../scss/page";
+
+.root {
+  @include page.boring;
+}
