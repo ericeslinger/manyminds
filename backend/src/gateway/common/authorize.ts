@@ -15,8 +15,8 @@ export async function authorize(
 
     return (
       (actor.token['trellis_profile'] &&
-        data.list.indexOf(`profile/${actor.token['trellis_profile']}`) >= 0) ||
-      data.list.indexOf(`uid/${actor.uid}`) >= 0
+        data.list.indexOf(`profiles#${actor.token['trellis_profile']}`) >= 0) ||
+      data.list.indexOf(`uid#${actor.uid}`) >= 0
     );
   } else {
     return false;

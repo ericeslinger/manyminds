@@ -1,8 +1,6 @@
 import { HttpsError, onCall } from 'firebase-functions/v2/https';
-import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
-import { request } from 'http';
-import { authorize } from '../common/authorize';
+import { hasMember } from '../rosters/roster';
 interface ListCall {
   uid: string;
   type: 'list';
@@ -27,13 +25,13 @@ export const fetchProfiles = onCall<ListCall | FetchCall>(
         const firestore = getFirestore();
         const rosters = await firestore
           .collectionGroup('_rosters')
-          .where('meta.type', '==', 'profiles')
-          .where('meta.contains', '==', 'users')
+          .where('resource.type', '==', 'profiles')
+          .where('type', '==', 'users')
           .where('list', 'array-contains', `uid/${request.auth!.uid}`)
           .get();
         const profiles = await Promise.all(
           rosters.docs.map((doc) =>
-            firestore.doc(`/profiles/${doc.data().meta.id}`).get()
+            firestore.doc(`/profiles/${doc.data().resource.id}`).get()
           )
         );
         return profiles.map((profile) => profile.data());
@@ -41,11 +39,16 @@ export const fetchProfiles = onCall<ListCall | FetchCall>(
         throw new HttpsError('permission-denied', 'permission denied');
       }
     } else {
-      const allowed = await authorize(
-        { type: 'profiles', id: request.data.id },
-        request.auth,
-        { contains: 'readers' }
-      );
+      const allowed = await hasMember({
+        thisId: {
+          resource: {
+            id: request.data.id,
+            type: 'profiles',
+          },
+          type: 'readers',
+        },
+        member: request.auth.token.trellis_profile,
+      });
       if (allowed) {
         return {};
       } else {

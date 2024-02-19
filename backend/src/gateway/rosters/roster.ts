@@ -37,6 +37,19 @@ export const RosterConverter = {
   fromFirestore: (snapshot: QueryDocumentSnapshot) => snapshot.data() as Roster,
 };
 
+export async function createRoster(id: RosterId, initial: string[] = []) {
+  getFirestore()
+    .doc(rosterPathString(id))
+    .withConverter(RosterConverter)
+    .create({
+      ...id,
+      direct: Object.fromEntries(initial.map((v) => [v, true])),
+      indirect: {
+        [rosterPathId(id)]: 1,
+      },
+    });
+}
+
 export async function getRoster(id: RosterId, trx?: Transaction) {
   const docId = getFirestore()
     .doc(rosterPathString(id))

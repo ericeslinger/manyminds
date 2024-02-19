@@ -1,6 +1,6 @@
 import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import { getFirestore } from 'firebase-admin/firestore';
-import { createRoster } from '../common/rosters';
+import { createRoster, addMember } from '../rosters/roster';
 
 export const createProfile = onCall<{ name: string; description: string }>(
   {
@@ -16,9 +16,57 @@ export const createProfile = onCall<{ name: string; description: string }>(
         type: 'profiles',
         id: doc.id,
       });
-      await createRoster({ type: 'profiles', contains: 'users', id: doc.id }, [
-        `uid/${request.auth.uid}`,
+      await Promise.all([
+        createRoster(
+          {
+            type: 'users',
+            resource: {
+              type: 'profiles',
+              id: doc.id,
+            },
+          },
+          [`uid#${request.auth.uid}`]
+        ),
+        createRoster({
+          type: 'readers',
+          resource: {
+            type: 'profiles',
+            id: doc.id,
+          },
+        }),
       ]);
+      await addMember({
+        thisId: {
+          type: 'readers',
+          resource: {
+            type: 'profiles',
+            id: doc.id,
+          },
+        },
+        memberId: {
+          type: 'users',
+          resource: {
+            type: 'profiles',
+            id: doc.id,
+          },
+        },
+      });
+      await addMember({
+        thisId: {
+          type: 'readers',
+          resource: {
+            type: 'profiles',
+            id: doc.id,
+          },
+        },
+        memberId: {
+          type: 'profiles',
+          resource: {
+            type: 'profiles',
+            id: doc.id,
+          },
+        },
+      });
       return (await doc.get()).data;
     } else {
       throw new HttpsError('permission-denied', 'permission denied');
