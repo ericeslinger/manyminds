@@ -61,9 +61,14 @@ export async function getRoster(id: RosterId, trx?: Transaction) {
   return roster.data()!;
 }
 
-export async function hasMember({ memberId, thisId }: Membership) {
+export async function hasMember({
+  memberId,
+  thisId,
+}: Membership | { thisId: RosterId; memberId: string }) {
   const roster = await getRoster(thisId);
-  return roster.indirect[rosterPathId(memberId)] > 0;
+  const memberString =
+    typeof memberId === 'string' ? memberId : rosterPathId(memberId);
+  return roster.indirect[memberString] > 0;
 }
 
 export async function addMember({ memberId, thisId }: Membership) {

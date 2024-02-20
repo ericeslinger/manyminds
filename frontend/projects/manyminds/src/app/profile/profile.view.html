@@ -1,1 +1,8 @@
-<p>profile works!</p>
+<div class="boring">
+  <div>
+    Name: {{(profile$ | async)?.name}}
+  </div>
+  <div>
+    Description: {{(profile$ | async)?.description}}
+  </div>
+</div>

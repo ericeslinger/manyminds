@@ -3,6 +3,7 @@ import {
   provideRouter,
   PreloadAllModules,
   withPreloading,
+  withComponentInputBinding,
 } from '@angular/router';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
@@ -13,7 +14,11 @@ import { firebaseProviders } from '../firebase/firebase.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes, withPreloading(PreloadAllModules)),
+    provideRouter(
+      routes,
+      withPreloading(PreloadAllModules),
+      withComponentInputBinding()
+    ),
     provideClientHydration(),
     provideAnimations(),
     firebaseProviders,

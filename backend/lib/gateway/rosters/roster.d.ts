@@ -18,8 +18,12 @@ export declare const RosterConverter: {
     toFirestore: (data: Roster) => Roster;
     fromFirestore: (snapshot: QueryDocumentSnapshot) => Roster;
 };
+export declare function createRoster(id: RosterId, initial?: string[]): Promise<void>;
 export declare function getRoster(id: RosterId, trx?: Transaction): Promise<Roster>;
-export declare function hasMember({ memberId, thisId }: Membership): Promise<boolean>;
+export declare function hasMember({ memberId, thisId, }: Membership | {
+    thisId: RosterId;
+    memberId: string;
+}): Promise<boolean>;
 export declare function addMember({ memberId, thisId }: Membership): Promise<void>;
 export declare function removeMember({ memberId, thisId }: Membership): Promise<void>;
 //# sourceMappingURL=roster.d.ts.map

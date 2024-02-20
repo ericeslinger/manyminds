@@ -1,6 +1,7 @@
 import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import { getFirestore } from 'firebase-admin/firestore';
-import { createRoster, addMember } from '../rosters/roster';
+import { createRoster, addMember, rosterPathId } from '../rosters/roster';
+import { getAuth } from 'firebase-admin/auth';
 
 export const createProfile = onCall<{ name: string; description: string }>(
   {
@@ -51,21 +52,27 @@ export const createProfile = onCall<{ name: string; description: string }>(
           },
         },
       });
-      await addMember({
-        thisId: {
-          type: 'readers',
-          resource: {
-            type: 'profiles',
-            id: doc.id,
-          },
-        },
-        memberId: {
-          type: 'profiles',
-          resource: {
-            type: 'profiles',
-            id: doc.id,
-          },
-        },
+      // await addMember({
+      //   thisId: {
+      //     type: 'readers',
+      //     resource: {
+      //       type: 'profiles',
+      //       id: doc.id,
+      //     },
+      //   },
+      //   memberId: {
+      //     type: 'users',
+      //     resource: {
+      //       type: 'profiles',
+      //       id: doc.id,
+      //     },
+      //   },
+      // });
+      await getAuth().setCustomUserClaims(request.auth.uid, {
+        trellis_profile: rosterPathId({
+          type: 'owners',
+          resource: { type: 'profiles', id: doc.id },
+        }),
       });
       return (await doc.get()).data;
     } else {

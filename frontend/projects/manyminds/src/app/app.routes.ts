@@ -21,7 +21,7 @@ export const routes: Routes = [
       import('./profile/profile.create').then((mod) => mod.ProfileCreate),
   },
   {
-    path: 'profile/view',
+    path: 'profile/:id',
     loadComponent: () =>
       import('./profile/profile.view').then((mod) => mod.ProfileView),
   },
