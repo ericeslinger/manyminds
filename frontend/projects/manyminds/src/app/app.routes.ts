@@ -7,6 +7,11 @@ export const routes: Routes = [
     loadComponent: () => import('./home/home.view').then((mod) => mod.HomeView),
   },
   {
+    path: 'login',
+    loadComponent: () =>
+      import('./login/login.view').then((mod) => mod.LoginView),
+  },
+  {
     path: 'auth/create',
     loadComponent: () =>
       import('./auth/auth.create').then((mod) => mod.AuthCreate),

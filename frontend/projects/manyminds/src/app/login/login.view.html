@@ -1,1 +1,24 @@
-<p>login works!</p>
+<div class="root">
+  <mat-form-field>
+    <mat-label>Username</mat-label>
+    <input matInput type="text" [(ngModel)]="username" [errorStateMatcher]="emailInvalid">
+    @if (username) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="username=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+    <mat-error>woops</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput type="text" [(ngModel)]="password"  errorState="{{error().password}}">
+    <mat-error>woops</mat-error>
+    @if (password) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+  <button mat-button color="primary" (click)="doSignin()">Sign In</button>
+</div>
+<div>{{error() | json}}</div>
