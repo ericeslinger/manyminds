@@ -70,7 +70,7 @@ export const createProfile = onCall<{ name: string; description: string }>(
       // });
       await getAuth().setCustomUserClaims(request.auth.uid, {
         trellis_profile: rosterPathId({
-          type: 'owners',
+          type: 'users',
           resource: { type: 'profiles', id: doc.id },
         }),
       });

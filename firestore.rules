@@ -1,8 +1,5 @@
 rules_version = '2';
 service cloud.firestore {
-  function isSignedIn() {
-    return debug(request).auth != null;
-  }
 
   match /databases/{database}/documents {
     // function getThing(itemType, id) {
@@ -23,13 +20,13 @@ service cloud.firestore {
     }
 
     match /{itemType}/{id} {
-      allow read: if  isSignedIn() && (
-         resource.data.public == true 
-       || 
-          getRoster(itemType, id, 'readers').list.keys().hasAny(
-              getRoster('profiles', request.auth.token.profile, 'memberships').up.indirect.keys()
-          ) == true
-      )
+      function canRead() {
+        let roster = getRoster(itemType, id, 'readers');
+        return roster.indirect[request.auth.token.trellis_profile] > 0 
+            || (request.auth.uid != null && roster.direct['meta#global'] == true)
+            || roster.direct['meta#public'] == true;
+      }
+      allow read: if canRead();
     }
 
   }

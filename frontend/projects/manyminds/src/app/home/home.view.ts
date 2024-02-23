@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   collection,
   doc,
@@ -11,6 +11,7 @@ import {
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Auth } from '@angular/fire/auth';
 
 interface Post {
   handle: string;
@@ -26,11 +27,13 @@ interface Post {
 export class HomeView {
   someDoc: Observable<unknown>;
   topPosts: Observable<Post[]>;
-  constructor(private firestore: Firestore) {
-    this.someDoc = docData(doc(firestore, 'site/meta'));
+  private auth: Auth = inject(Auth);
+  private firestore: Firestore = inject(Firestore);
+  constructor() {
+    this.someDoc = docData(doc(this.firestore, 'site/meta'));
     this.topPosts = collectionData(
       query(
-        collection(firestore, 'posts').withConverter<Post>({
+        collection(this.firestore, 'posts').withConverter<Post>({
           fromFirestore: (doc) => {
             return { handle: doc.data()['handle'] };
           },
@@ -39,5 +42,8 @@ export class HomeView {
         where('public', '==', true)
       )
     );
+  }
+  logout() {
+    this.auth.signOut();
   }
 }
