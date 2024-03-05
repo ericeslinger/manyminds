@@ -1,9 +1,9 @@
 <div class="root">
   <mat-form-field>
     <mat-label>Username</mat-label>
-    <input matInput type="text" [(ngModel)]="username" [errorStateMatcher]="emailInvalid">
-    @if (username) {
-      <button matSuffix mat-icon-button aria-label="Clear" (click)="username=''">
+    <input matInput type="text" [formControl]="email">
+    @if (email.dirty) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="email.reset()">
         <mat-icon>close</mat-icon>
       </button>
     }
@@ -11,14 +11,13 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Password</mat-label>
-    <input matInput type="text" [(ngModel)]="password"  errorState="{{error().password}}">
+    <input matInput type="text" [formControl]="password">
     <mat-error>woops</mat-error>
-    @if (password) {
-      <button matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
+    @if (password.dirty) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="password.reset()">
         <mat-icon>close</mat-icon>
       </button>
     }
   </mat-form-field>
   <button mat-button color="primary" (click)="doSignin()">Sign In</button>
 </div>
-<div>{{error() | json}}</div>

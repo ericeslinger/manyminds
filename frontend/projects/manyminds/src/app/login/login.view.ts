@@ -7,6 +7,12 @@ import { Auth, AuthError } from '@angular/fire/auth';
 import { signInWithEmailAndPassword } from '@angular/fire/auth';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import {
+  FormControl,
+  ReactiveFormsModule,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'mm-login',
@@ -15,7 +21,7 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatInputModule,
     MatIconModule,
-    FormsModule,
+    ReactiveFormsModule,
     RouterModule,
     CommonModule,
   ],
@@ -23,30 +29,24 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.view.scss',
 })
 export class LoginView {
-  password = '';
-  username = '';
-  error = signal({
-    email: false,
-    password: false,
+  email = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.email],
+  });
+  password = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required],
   });
 
   private auth: Auth = inject(Auth);
   private router: Router = inject(Router);
 
-  emailInvalid = {
-    isErrorState: () => this.error().email,
-  };
-
-  passwordInvalid = {
-    isErrorSate: () => this.error().password,
-  };
-
   async doSignin() {
     try {
       const result = await signInWithEmailAndPassword(
         this.auth,
-        this.username,
-        this.password
+        this.email.getRawValue(),
+        this.password.getRawValue()
       );
       this.router.navigate(['auth', 'me']);
     } catch (e) {
@@ -54,16 +54,11 @@ export class LoginView {
       console.log(authError.code);
       switch (authError.code) {
         case 'auth/user-not-found':
-          this.error.set({
-            email: true,
-            password: false,
-          });
+          this.email.setErrors({ error: 'notfound' });
           break;
         default:
-          this.error.set({
-            email: true,
-            password: true,
-          });
+          this.email.setErrors({ error: 'unknowns' });
+          this.password.setErrors({ error: 'unknowns' });
       }
     }
   }

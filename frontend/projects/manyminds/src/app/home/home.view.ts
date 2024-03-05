@@ -11,7 +11,7 @@ import {
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Auth } from '@angular/fire/auth';
+import { Auth, user } from '@angular/fire/auth';
 
 interface Post {
   handle: string;
@@ -28,6 +28,7 @@ export class HomeView {
   someDoc: Observable<unknown>;
   topPosts: Observable<Post[]>;
   private auth: Auth = inject(Auth);
+  currentUser = user(this.auth);
   private firestore: Firestore = inject(Firestore);
   constructor() {
     this.someDoc = docData(doc(this.firestore, 'site/meta'));
