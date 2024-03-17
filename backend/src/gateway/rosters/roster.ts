@@ -79,6 +79,30 @@ export async function removeMember({ memberId, thisId }: Membership) {
   return op({ action: 'remove', memberId, thisId });
 }
 
+export async function initializeRosters(resource: Id, first?: RosterId) {
+  const { readers, commenters, editors } = {
+    readers: { type: 'readers', resource },
+    commenters: { type: 'commenters', resource },
+    editors: { type: 'editors', resource },
+  };
+  await Promise.all(
+    [readers, commenters, editors].map((role) => createRoster(role))
+  );
+  await Promise.all(
+    [
+      [first, editors],
+      [editors, commenters],
+      [commenters, readers],
+    ].map(([memberId, thisId]) => {
+      if (memberId && thisId) {
+        return addMember({ memberId, thisId });
+      } else {
+        return;
+      }
+    })
+  );
+}
+
 async function op({
   action,
   thisId,

@@ -35,4 +35,8 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./profile/profile.list').then((mod) => mod.ProfileList),
   },
+  {
+    path: 'post/:id/edit',
+    loadComponent: () => import('./post/post.edit').then((mod) => mod.PostEdit),
+  },
 ];

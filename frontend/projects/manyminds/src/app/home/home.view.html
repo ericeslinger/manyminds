@@ -5,6 +5,7 @@
   <li><a routerLink="/auth/create">Sign up (wip)</a></li>
   <li *ngIf="!(currentUser | async)"><a routerLink="/login">Log in</a></li>
   <li *ngIf="currentUser | async" (click)="logout()">Log out</li>
+  <li *ngIf="currentUser | async"><a routerLink="/post/create">create post</a></li>
   <li>Profile page (nyi)</li>
   <li>Rss feeds (nyi)</li>
   <li>Clusters (nyi)</li>
