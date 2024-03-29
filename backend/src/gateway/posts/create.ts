@@ -1,6 +1,6 @@
 import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import { getFirestore } from 'firebase-admin/firestore';
-import { initializeRosters, rosterPathId } from '../rosters/roster';
+import { initializeRosters, parseRosterPathId } from '../rosters/roster';
 import { getAuth } from 'firebase-admin/auth';
 import { info } from 'firebase-functions/logger';
 
@@ -29,13 +29,7 @@ export const createPost = onCall<{}>(
           type: ITEM_TYPE,
           id: doc.id,
         },
-        {
-          type: 'profiles',
-          resource: {
-            type: 'profiles',
-            id: request.auth.token.trellis_profile,
-          },
-        }
+        parseRosterPathId(request.auth.token.trellis_profile)
       );
       return doc.id;
     } else {

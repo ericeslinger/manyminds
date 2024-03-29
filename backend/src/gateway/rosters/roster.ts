@@ -8,6 +8,7 @@ import {
 
 import { Id, pathId, fieldId } from '../common/id';
 import { HttpsError } from 'firebase-functions/v2/https';
+import { info } from 'firebase-functions/logger';
 
 export interface RosterId {
   resource: Id;
@@ -26,6 +27,21 @@ export interface Membership {
 
 export function rosterPathId(id: RosterId) {
   return `${fieldId(id.resource)}#${id.type}`;
+}
+
+export function parseRosterPathId(id: string): RosterId {
+  const blocks = id.split('#');
+  if (blocks.length !== 3) {
+    throw new HttpsError('invalid-argument', `cannot parse ${id}`);
+  } else {
+    return {
+      type: blocks[2],
+      resource: {
+        id: blocks[1],
+        type: blocks[0],
+      },
+    };
+  }
 }
 
 export function rosterPathString(id: RosterId) {
@@ -72,6 +88,7 @@ export async function hasMember({
 }
 
 export async function addMember({ memberId, thisId }: Membership) {
+  info({ memberId, thisId });
   return op({ action: 'add', memberId, thisId });
 }
 
@@ -80,11 +97,10 @@ export async function removeMember({ memberId, thisId }: Membership) {
 }
 
 export async function initializeRosters(resource: Id, first?: RosterId) {
-  const { readers, commenters, editors } = {
-    readers: { type: 'readers', resource },
-    commenters: { type: 'commenters', resource },
-    editors: { type: 'editors', resource },
-  };
+  const readers = { type: 'readers', resource };
+  const commenters = { type: 'commenters', resource };
+  const editors = { type: 'editors', resource };
+
   await Promise.all(
     [readers, commenters, editors].map((role) => createRoster(role))
   );

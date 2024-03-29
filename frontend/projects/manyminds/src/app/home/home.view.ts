@@ -10,8 +10,9 @@ import {
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { Auth, user } from '@angular/fire/auth';
+import { Functions, httpsCallable } from '@angular/fire/functions';
 
 interface Post {
   handle: string;
@@ -28,6 +29,9 @@ export class HomeView {
   someDoc: Observable<unknown>;
   topPosts: Observable<Post[]>;
   private auth: Auth = inject(Auth);
+  private functions: Functions = inject(Functions);
+  private router: Router = inject(Router);
+
   currentUser = user(this.auth);
   private firestore: Firestore = inject(Firestore);
   constructor() {
@@ -46,5 +50,13 @@ export class HomeView {
   }
   logout() {
     this.auth.signOut();
+  }
+
+  async createPost() {
+    const post = await httpsCallable<{}, string>(
+      this.functions,
+      'createPost'
+    )({});
+    this.router.navigate(['post', post.data, 'edit']);
   }
 }

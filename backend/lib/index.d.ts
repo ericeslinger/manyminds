@@ -11,4 +11,5 @@ export declare const createProfile: import("firebase-functions/v2/https").Callab
     description: string;
 }, any>;
 export declare const fetchProfiles: import("firebase-functions/v2/https").CallableFunction<import("./gateway/profiles/fetchProfiles").ListCall, any>;
+export declare const createPost: import("firebase-functions/v2/https").CallableFunction<{}, any>;
 //# sourceMappingURL=index.d.ts.map

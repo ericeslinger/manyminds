@@ -13,6 +13,7 @@ export interface Membership {
     memberId: RosterId;
 }
 export declare function rosterPathId(id: RosterId): string;
+export declare function parseRosterPathId(id: string): RosterId;
 export declare function rosterPathString(id: RosterId): string;
 export declare const RosterConverter: {
     toFirestore: (data: Roster) => Roster;
@@ -26,4 +27,5 @@ export declare function hasMember({ memberId, thisId, }: Membership | {
 }): Promise<boolean>;
 export declare function addMember({ memberId, thisId }: Membership): Promise<void>;
 export declare function removeMember({ memberId, thisId }: Membership): Promise<void>;
+export declare function initializeRosters(resource: Id, first?: RosterId): Promise<void>;
 //# sourceMappingURL=roster.d.ts.map
