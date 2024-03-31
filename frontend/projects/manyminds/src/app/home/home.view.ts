@@ -55,8 +55,8 @@ export class HomeView {
   async createPost() {
     const post = await httpsCallable<{}, string>(
       this.functions,
-      'createPost'
-    )({});
+      'make_a_thing'
+    )({ type: 'post' });
     this.router.navigate(['post', post.data, 'edit']);
   }
 }

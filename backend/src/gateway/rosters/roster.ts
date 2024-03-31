@@ -96,24 +96,24 @@ export async function removeMember({ memberId, thisId }: Membership) {
   return op({ action: 'remove', memberId, thisId });
 }
 
-export async function initializeRosters(resource: Id, first?: RosterId) {
-  const readers = { type: 'readers', resource };
-  const commenters = { type: 'commenters', resource };
-  const editors = { type: 'editors', resource };
-
+export async function initializeRosters(
+  resource: Id & { chain: string[]; owner: RosterId }
+) {
+  const rosters = resource.chain.map((role) => ({
+    type: role,
+    resource: {
+      id: resource.id,
+      type: resource.type,
+    },
+  }));
+  await Promise.all(rosters.map((role) => createRoster(role)));
+  const everybody = [resource.owner, ...rosters];
   await Promise.all(
-    [readers, commenters, editors].map((role) => createRoster(role))
-  );
-  await Promise.all(
-    [
-      [first, editors],
-      [editors, commenters],
-      [commenters, readers],
-    ].map(([memberId, thisId]) => {
-      if (memberId && thisId) {
-        return addMember({ memberId, thisId });
+    everybody.map(async (roster, idx) => {
+      if (everybody[idx + 1]) {
+        return addMember({ memberId: roster, thisId: everybody[idx + 1] });
       } else {
-        return;
+        return null;
       }
     })
   );
